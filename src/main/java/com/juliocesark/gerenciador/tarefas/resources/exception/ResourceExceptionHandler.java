@@ -1,9 +1,6 @@
 package com.juliocesark.gerenciador.tarefas.resources.exception;
 
-import com.juliocesark.gerenciador.tarefas.service.exceptions.DateFormatterException;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.InvalidDateException;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.ObjectNotFoundException;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.TaskNameException;
+import com.juliocesark.gerenciador.tarefas.service.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +24,12 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<StandardError> invalidDateException(InvalidDateException e, HttpServletRequest request) {
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(PriceException.class)
+    public ResponseEntity<StandardError> priceException(PriceException e, HttpServletRequest request) {
         StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }

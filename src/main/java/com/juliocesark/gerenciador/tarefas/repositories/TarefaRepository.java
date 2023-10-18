@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
+    Tarefa findByName(String name);
 }

@@ -3,14 +3,11 @@ package com.juliocesark.gerenciador.tarefas.service;
 import com.juliocesark.gerenciador.tarefas.dto.TarefaDTO;
 import com.juliocesark.gerenciador.tarefas.model.Tarefa;
 import com.juliocesark.gerenciador.tarefas.repositories.TarefaRepository;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.DateFormatterException;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.InvalidDateException;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.ObjectNotFoundException;
-import com.juliocesark.gerenciador.tarefas.service.exceptions.TaskNameException;
+import com.juliocesark.gerenciador.tarefas.service.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,27 +28,20 @@ public class TarefaService {
         logger.info("Executando o método find com id = " + id);
         Optional<Tarefa> tarefa = repository.findById(id);
         if (!tarefa.isPresent())
-            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id);
+            throw new ObjectNotFoundException("Tarefa não encontrada! Id: " + id);
         return tarefa.get(); // 200 OK
     }
 
     public Tarefa save(Tarefa tarefa) {
         logger.info("Executando o método save");
-        checkDate(tarefa);
+        if(tarefa == null) throw new TaskNameException("Tarefa nula");
         tarefa.setOrder(getOrder());
-        tarefa.setName(tarefa.getName().toUpperCase());
-        try {
-            return repository.save(tarefa);
-        } catch(DataIntegrityViolationException e) {
-            throw new TaskNameException("Verifique se o nome da tarefa já existe: " + tarefa.getName());
-        }
+        return repository.save(tarefa);
     }
 
     public Tarefa update(Tarefa tarefa) {
         logger.info("Executando o método update");
-        checkDate(tarefa);
         Tarefa newObj = find(tarefa.getId());
-        tarefa.setName(tarefa.getName().toUpperCase());
         updateData(newObj, tarefa);
         return repository.save(newObj);
     }
@@ -69,7 +59,7 @@ public class TarefaService {
 
     private Long getOrder() {
         Long count = repository.count();
-        if(count == null) return 1L;
+        if (count == null) return 1L;
         return count + 1;
     }
 
@@ -96,21 +86,50 @@ public class TarefaService {
     }
 
     public Tarefa fromDTO(TarefaDTO tarefaDto) {
-        String dateInString = tarefaDto.getLimitDate();
-        Date date;
-        try {
-            date = formatter.parse(dateInString);
-        } catch (ParseException e ){
-            throw new DateFormatterException("A data informada precisa estar no padrão dd/mm/yyyy! date: " + dateInString);
-        }
-        return new Tarefa(tarefaDto.getName().toUpperCase(), tarefaDto.getPrice(), date);
+        Date date = checkDate(tarefaDto);
+        checkName(tarefaDto);
+        checkPrice(tarefaDto);
+
+        return new Tarefa(tarefaDto.getName().toUpperCase().trim(), tarefaDto.getPrice().trim(), date);
     }
 
-    private void checkDate(Tarefa tarefa){
+    private Date checkDate(TarefaDTO dto) {
         Date today = new Date();
-        if(tarefa.getLimitDate().before(today)){
-            String dataStr = formatter.format(tarefa.getLimitDate());
-            throw new InvalidDateException("A Data informada é anterior a data corrente! " + dataStr);
+        Date date;
+        if(dto.getLimitDate() == null || "".equals(dto.getLimitDate().trim()))
+            throw new DateFormatterException("A data deve ser informada!");
+
+        try {
+            date = formatter.parse(dto.getLimitDate().trim());
+        }catch(ParseException e){
+            throw new DateFormatterException("A data informada deve estar no padrão dd/mm/yyyy!");
         }
+
+        if (date.before(today)) {
+            throw new InvalidDateException("A Data informada não pode ser anterior a data corrente!");
+        }
+        return date;
+    }
+
+    private void checkName(TarefaDTO dto) {
+        if(dto.getName() == null || "".equals(dto.getName().trim()))
+            throw new TaskNameException("O nome da tarefa não pode ser vazio");
+
+        Tarefa tarefaModel = repository.findByName(dto.getName().toUpperCase().trim());
+        if (tarefaModel != null)
+            throw new TaskNameException("O nome da tarefa não pode ser repetido");
+    }
+
+    private void checkPrice(TarefaDTO dto) {
+        if (dto.getPrice() == null || "".equals(dto.getPrice().trim()))
+            throw new PriceException("O preço deve ser informado!");
+        BigDecimal price = BigDecimal.ZERO;
+        try {
+            price = new BigDecimal(dto.getPrice().trim());
+        }catch (NumberFormatException e){
+            throw new PriceException("O preço deve ser númerico!");
+        }
+        if(price.intValue() == 0)
+            throw new PriceException("O preço deve ser maior que zero!");
     }
 }
