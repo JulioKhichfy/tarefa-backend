@@ -30,6 +30,14 @@ public class Tarefa implements Serializable {
 
     public Tarefa(){}
 
+
+    public Tarefa(String name, String price, Date limitDate) {
+        super();
+        this.name = name;
+        this.price = new BigDecimal(price);
+        this.limitDate = limitDate;
+    }
+
     public Long getId() {
         return id;
     }
