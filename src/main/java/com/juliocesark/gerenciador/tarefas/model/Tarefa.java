@@ -1,18 +1,19 @@
 package com.juliocesark.gerenciador.tarefas.model;
 
 import jakarta.persistence.*;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_tarefa")
-public class Task {
+public class Tarefa implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name="name", unique=true, nullable=false)
     private String name;
@@ -23,17 +24,17 @@ public class Task {
     @Column(name="limitDate", nullable=false)
     private Date limitDate;
 
-    @Column(name="order")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer order;
+    @Column(name = "order")
+    private Long order;
 
-    public Task(){}
 
-    public Integer getId() {
+    public Tarefa(){}
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,11 +62,11 @@ public class Task {
         this.limitDate = limitDate;
     }
 
-    public Integer getOrder() {
+    public Long getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(Long order) {
         this.order = order;
     }
 
@@ -73,8 +74,8 @@ public class Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return id.equals(task.id) && name.equals(task.name) && price.equals(task.price) && limitDate.equals(task.limitDate) && order.equals(task.order);
+        Tarefa tarefa = (Tarefa) o;
+        return id.equals(tarefa.id) && name.equals(tarefa.name) && price.equals(tarefa.price) && limitDate.equals(tarefa.limitDate) && order.equals(tarefa.order);
     }
 
     @Override
