@@ -14,8 +14,9 @@
 	<name>gerenciador.tarefas</name>
 	<description>Sistema Gerenciador de Tarefas</description>
 	<properties>
-		<dozer.version>6.4.0</dozer.version>
 		<java.version>17</java.version>
+		<dozer.version>6.4.0</dozer.version>
+		<springdoc.version>2.2.0</springdoc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -32,6 +33,13 @@
 			<groupId>com.github.dozermapper</groupId>
 			<artifactId>dozer-core</artifactId>
 			<version>${dozer.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>

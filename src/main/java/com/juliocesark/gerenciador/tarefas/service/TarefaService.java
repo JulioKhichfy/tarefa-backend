@@ -49,7 +49,7 @@ public class TarefaService {
     public TarefaDTO update(TarefaDTO tarefaDTO) {
         logger.info("Executando o método update");
         if(tarefaDTO == null) throw new TaskNullableException("Error: Tarefa é null");
-        
+
         checkUpdateName(tarefaDTO);
         checkPrice(tarefaDTO.getPrice().trim());
         checkDate(tarefaDTO.getLimitDate());
