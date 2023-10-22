@@ -1,13 +1,13 @@
 package com.juliocesark.gerenciador.tarefas.service.exceptions;
 
-public class InvalidDateException extends RuntimeException {
+public class TaskPriceException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public InvalidDateException(String msg) {
+    public TaskPriceException(String msg) {
         super(msg);
     }
 
-    public InvalidDateException(String msg, Throwable cause) {
+    public TaskPriceException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }

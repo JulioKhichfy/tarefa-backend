@@ -14,6 +14,7 @@
 	<name>gerenciador.tarefas</name>
 	<description>Sistema Gerenciador de Tarefas</description>
 	<properties>
+		<dozer.version>6.4.0</dozer.version>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
@@ -25,6 +26,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-core</artifactId>
+			<version>${dozer.version}</version>
 		</dependency>
 
 		<dependency>
@@ -54,12 +61,12 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${parent.version}</version>
 			</plugin>
 		</plugins>
 	</build>

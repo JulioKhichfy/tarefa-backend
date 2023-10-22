@@ -20,36 +20,57 @@ public class TarefaResource {
     @Autowired
     private TarefaService service;
 
-    @GetMapping(value="/{id}")
+    /*@GetMapping(value="/{id}")
     public ResponseEntity<?> find(@PathVariable Long id) {
         Tarefa tarefa = service.find(id);
         return ResponseEntity.ok().body(tarefa);
+    }*/
+
+    @GetMapping(value="/{id}")
+    public TarefaDTO find(@PathVariable Long id) {
+        return service.find(id);
     }
 
-    @PostMapping()
+    /*@PostMapping()
     public ResponseEntity<Void> insert(@RequestBody TarefaDTO tarefaDTO) {
-        Tarefa tarefaModel = service.fromDTO(tarefaDTO);
+        //Tarefa tarefaModel = service.fromDTO(tarefaDTO);
         tarefaModel = service.save(tarefaModel);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(tarefaModel.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }*/
+
+    @PostMapping
+    public TarefaDTO insert(@RequestBody TarefaDTO tarefaDTO) {
+        return service.create(tarefaDTO);
     }
 
-    @PutMapping(value="/{id}")
+    /*@PutMapping(value="/{id}")
     public ResponseEntity<Void> update(@RequestBody TarefaDTO tarefaDTO, @PathVariable Long id) {
         Tarefa tarefa = service.fromDTO(tarefaDTO);
         tarefa.setId(id);
         service.update(tarefa);
         return ResponseEntity.noContent().build();
+    }*/
+
+    @PutMapping
+    public TarefaDTO update(@RequestBody TarefaDTO tarefaDTO) {
+        return service.update(tarefaDTO);
     }
 
-    @DeleteMapping(value="/{id}")
+    /*@DeleteMapping(value="/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }*/
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping()
+    /*@GetMapping
     public ResponseEntity<List<TarefaDTO>> findAll() {
         List<Tarefa> list = service.findAll();
         List<Tarefa> listOrdenada = list.stream()
@@ -58,6 +79,10 @@ public class TarefaResource {
 
         List<TarefaDTO> listDto = listOrdenada.stream().map(obj -> new TarefaDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
+    }*/
+    @GetMapping
+    public List<TarefaDTO> findAll() {
+        return service.findAll();
     }
 
     @PutMapping(value="/{id1}/{id2}")

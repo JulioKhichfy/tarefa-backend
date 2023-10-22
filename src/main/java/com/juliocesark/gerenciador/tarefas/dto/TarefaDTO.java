@@ -1,27 +1,21 @@
 package com.juliocesark.gerenciador.tarefas.dto;
-
-
-import com.juliocesark.gerenciador.tarefas.model.Tarefa;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class TarefaDTO {
 
+    private Long id;
     private String name;
     private String price;
-    private String limitDate;
+    private LocalDate limitDate;
 
-    public TarefaDTO(){
+    public TarefaDTO(){}
 
+    public Long getId() {
+        return id;
     }
 
-    public TarefaDTO(Tarefa tarefa){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        this.name = tarefa.getName();
-        this.price = tarefa.getPrice().toString();
-        this.limitDate = formatter.format(tarefa.getLimitDate());
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,11 +34,11 @@ public class TarefaDTO {
         this.price = price;
     }
 
-    public String getLimitDate() {
+    public LocalDate getLimitDate() {
         return limitDate;
     }
 
-    public void setLimitDate(String limitDate) {
+    public void setLimitDate(LocalDate limitDate) {
         this.limitDate = limitDate;
     }
 }

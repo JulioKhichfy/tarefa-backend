@@ -3,7 +3,7 @@ package com.juliocesark.gerenciador.tarefas.model;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -22,21 +22,12 @@ public class Tarefa implements Serializable {
     private BigDecimal price;
 
     @Column(name="limitDate", nullable=false)
-    private Date limitDate;
+    private LocalDate limitDate;
 
     @Column(name = "order")
     private Long order;
 
-
     public Tarefa(){}
-
-
-    public Tarefa(String name, String price, Date limitDate) {
-        super();
-        this.name = name;
-        this.price = new BigDecimal(price);
-        this.limitDate = limitDate;
-    }
 
     public Long getId() {
         return id;
@@ -62,11 +53,11 @@ public class Tarefa implements Serializable {
         this.price = price;
     }
 
-    public Date getLimitDate() {
+    public LocalDate getLimitDate() {
         return limitDate;
     }
 
-    public void setLimitDate(Date limitDate) {
+    public void setLimitDate(LocalDate limitDate) {
         this.limitDate = limitDate;
     }
 

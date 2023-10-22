@@ -1,13 +1,13 @@
 package com.juliocesark.gerenciador.tarefas.service.exceptions;
 
-public class DateFormatterException  extends RuntimeException {
+public class TaskNullableException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public DateFormatterException(String msg) {
+    public TaskNullableException(String msg) {
         super(msg);
     }
 
-    public DateFormatterException(String msg, Throwable cause) {
+    public TaskNullableException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }

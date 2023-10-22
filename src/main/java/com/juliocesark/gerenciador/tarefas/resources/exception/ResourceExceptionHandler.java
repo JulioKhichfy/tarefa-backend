@@ -10,26 +10,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
-        StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
-    }
-
-    @ExceptionHandler(DateFormatterException.class)
-    public ResponseEntity<StandardError> dateFormatterException(DateFormatterException e, HttpServletRequest request) {
-        StandardError err = new StandardError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
-    }
-
-    @ExceptionHandler(InvalidDateException.class)
-    public ResponseEntity<StandardError> invalidDateException(InvalidDateException e, HttpServletRequest request) {
+    @ExceptionHandler(TaskInvalidDateException.class)
+    public ResponseEntity<StandardError> invalidDateException(TaskInvalidDateException e, HttpServletRequest request) {
         StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
-    @ExceptionHandler(PriceException.class)
-    public ResponseEntity<StandardError> priceException(PriceException e, HttpServletRequest request) {
+    @ExceptionHandler(TaskPriceException.class)
+    public ResponseEntity<StandardError> priceException(TaskPriceException e, HttpServletRequest request) {
         StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
@@ -39,4 +27,20 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<StandardError> resourceNotFoundException(TaskNotFoundException e, HttpServletRequest request) {
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(TaskNullableException.class)
+    public ResponseEntity<StandardError> taskNullableException(TaskNullableException e, HttpServletRequest request) {
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+
+
+
 }
